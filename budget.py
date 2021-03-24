@@ -41,7 +41,7 @@ class Category:
         title = self.get_str_title()
         movements = self.get_str_ledger()
         total = self.get_str_total()
-        return f'{title}\n{movements}\n{total}'
+        return f'{title}{os.linesep}{movements}{os.linesep}{total}'
 
     def get_str_title(self):
         max_line_len = 30
@@ -81,7 +81,7 @@ class Category:
             if i == len(self.ledger) - 1:
                 formatted_item = f'{description_formatted}{amount_formatted}'
             else:
-                formatted_item = f'{description_formatted}{amount_formatted}\n'
+                formatted_item = f'{description_formatted}{amount_formatted}{os.linesep}'
 
             formatted_ledger += formatted_item
             
@@ -97,8 +97,7 @@ def create_spend_chart(categories):
     chart = get_formatted_chart(categories_by_percentage)
     horizontal_labels = get_horizontal_label(categories_by_percentage)
     
-    final_bar_chart = title + os.linesep + chart + horizontal_labels
-    print(final_bar_chart)
+    final_bar_chart = f'{title}{os.linesep}{chart}{horizontal_labels}'
     return final_bar_chart
         
 def get_category_percentage(categories):
@@ -165,7 +164,8 @@ def get_horizontal_label(categories):
                 string_labels += key[i] + two_spaces
             except IndexError:
                 string_labels += ' ' + two_spaces
-        string_labels += os.linesep
-        string_labels += spaces_before_letter
+        if i != max_len_category - 1:
+            string_labels += os.linesep
+            string_labels += spaces_before_letter
 
     return string_labels
